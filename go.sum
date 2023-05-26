@@ -1,10 +1,10 @@
-github.com/AliceDiNunno/KubernetesUtil v1.0.2 h1:5a6Umy7gDdaiaffObjmeM5yTERmKLGdhQ10WPA2+GWs=
-github.com/AliceDiNunno/KubernetesUtil v1.0.2/go.mod h1:mbq0+jPu54HIUNh3Q4bUJFoZB+5EwXu/CXroJdqTCUY=
+github.com/AliceDiNunno/KubernetesUtil v1.0.3 h1:PW1YQ1jlySjDdCFTcphSSo6xp5Ky4QYsPkA5pHdmPek=
+github.com/AliceDiNunno/KubernetesUtil v1.0.3/go.mod h1:mbq0+jPu54HIUNh3Q4bUJFoZB+5EwXu/CXroJdqTCUY=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
-github.com/gorpc-experiments/GalaxyClient v1.0.4 h1:iYDRuzH8SY//AmABIJ2MAbpXDas0JSr/+YJuJ2SR9C8=
-github.com/gorpc-experiments/GalaxyClient v1.0.4/go.mod h1:J4sx8cvMImu6Sfntr4UhWoo20dRyBIGyIDREnei89mU=
+github.com/gorpc-experiments/ServiceCore v1.1.2 h1:ST0+HPOQln5UpGt1VgWY4//bBRnr2VjaM4EULC8Mz7k=
+github.com/gorpc-experiments/ServiceCore v1.1.2/go.mod h1:V8RRVT4uGJjs9VffNA09Hjj+Z9v+OWVO+Se1wG6Euh8=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
 github.com/sirupsen/logrus v1.9.2 h1:oxx1eChJGI6Uks2ZC4W1zpLlVgqB8ner4EuQwV4Ik1Y=

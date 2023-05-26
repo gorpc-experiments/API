@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/davecgh/go-spew/spew"
-	"github.com/gorpc-experiments/GalaxyClient"
+	"github.com/gorpc-experiments/ServiceCore"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -18,7 +18,7 @@ type Quotient struct {
 
 func main() {
 
-	client, err := GalaxyClient.NewGalaxyClient()
+	client, err := ServiceCore.NewGalaxyClient()
 
 	if err != nil {
 		log.Println(err.Error())
