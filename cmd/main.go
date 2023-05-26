@@ -2,9 +2,11 @@ package main
 
 import (
 	"fmt"
-	"github.com/davecgh/go-spew/spew"
+	"github.com/gin-gonic/gin"
 	"github.com/gorpc-experiments/ServiceCore"
-	log "github.com/sirupsen/logrus"
+	"log"
+	"net/http"
+	"strconv"
 )
 
 type Args struct {
@@ -17,7 +19,6 @@ type Quotient struct {
 }
 
 func main() {
-
 	client, err := ServiceCore.NewGalaxyClient()
 
 	if err != nil {
@@ -25,19 +26,80 @@ func main() {
 		return
 	}
 
-	var reply int
-	err = client.Call("Arith.Multiply", Args{17, 8}, &reply)
-	if err != nil {
-		spew.Dump(err)
-		return
-	}
-	fmt.Printf("Arith: %d*%d=%d\n", 17, 8, reply)
+	r := gin.Default()
+	r.GET("/multiply/:a/:b", func(c *gin.Context) {
 
-	var result Quotient
-	err = client.Call("Arith.Divide", Args{17, 8}, &result)
-	if err != nil {
-		spew.Dump(err)
-		return
-	}
-	fmt.Printf("Arith: %d/%d=%d remainder %d\n", 17, 8, result.Quo, result.Rem)
+		a := c.Param("a")
+		b := c.Param("b")
+
+		aInt, err := strconv.Atoi(a)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{
+				"err": err.Error(),
+			})
+			return
+		}
+
+		bInt, err := strconv.Atoi(b)
+
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{
+				"err": err.Error(),
+			})
+			return
+		}
+
+		var reply int
+		err = client.Call("Arith.Multiply", Args{aInt, bInt}, &reply)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"err": err.Error(),
+			})
+			return
+		}
+
+		c.JSON(http.StatusOK, gin.H{
+			"operation": fmt.Sprintf("%d * %d", aInt, bInt),
+			"result":    reply,
+		})
+	})
+	r.GET("/divide/:a/:b", func(c *gin.Context) {
+
+		a := c.Param("a")
+		b := c.Param("b")
+
+		aInt, err := strconv.Atoi(a)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{
+				"err": err.Error(),
+			})
+			return
+		}
+
+		bInt, err := strconv.Atoi(b)
+
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{
+				"err": err.Error(),
+			})
+			return
+		}
+
+		var result Quotient
+		err = client.Call("Arith.Divide", Args{aInt, bInt}, &result)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"err": err.Error(),
+			})
+			return
+		}
+
+		c.JSON(http.StatusOK, gin.H{
+			"operation": fmt.Sprintf("%d/%d", aInt, bInt),
+			"result":    result.Quo,
+			"reminder":  result.Rem,
+		})
+	})
+	r.Run() // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
+
 }
