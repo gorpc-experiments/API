@@ -18,7 +18,18 @@ type Quotient struct {
 	Err      string
 }
 
+type HealthCall struct {
+}
+
+type HealthResponse struct {
+	ErrorCount int
+
+	GalaxyAddress string
+	GalaxyPort    int
+}
+
 func main() {
+	ServiceCore.SetupLogging()
 	client, err := ServiceCore.NewGalaxyClient()
 
 	if err != nil {
