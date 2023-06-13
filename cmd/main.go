@@ -1,9 +1,12 @@
 package main
 
 import (
+	"context"
+	"encoding/json"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/gorpc-experiments/ServiceCore"
+	redis "github.com/redis/go-redis/v9"
 	"log"
 	"net/http"
 	"strconv"
@@ -28,6 +31,11 @@ type HealthResponse struct {
 	GalaxyPort    int
 }
 
+type OperationNotification struct {
+	Operation string
+	Result    int
+}
+
 func main() {
 	ServiceCore.SetupLogging()
 	client, err := ServiceCore.NewGalaxyClient()
@@ -36,6 +44,12 @@ func main() {
 		log.Println(err.Error())
 		return
 	}
+
+	rdb := redis.NewClient(&redis.Options{
+		Addr:     "localhost:6379",
+		Password: "", // no password set
+		DB:       0,  // use default DB
+	})
 
 	r := gin.Default()
 	r.GET("/multiply/:a/:b", func(c *gin.Context) {
@@ -68,6 +82,13 @@ func main() {
 			})
 			return
 		}
+
+		json, _ := json.Marshal(OperationNotification{
+			Operation: fmt.Sprintf("%d * %d", aInt, bInt),
+			Result:    reply,
+		})
+
+		rdb.Publish(context.Background(), "send-user-data", string(json))
 
 		c.JSON(http.StatusOK, gin.H{
 			"operation": fmt.Sprintf("%d * %d", aInt, bInt),
@@ -104,6 +125,13 @@ func main() {
 			})
 			return
 		}
+
+		json, _ := json.Marshal(OperationNotification{
+			Operation: fmt.Sprintf("%d / %d", aInt, bInt),
+			Result:    result.Quo,
+		})
+
+		rdb.Publish(context.Background(), "send-user-data", string(json))
 
 		c.JSON(http.StatusOK, gin.H{
 			"operation": fmt.Sprintf("%d/%d", aInt, bInt),
